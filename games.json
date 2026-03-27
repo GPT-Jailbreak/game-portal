@@ -1,0 +1,32 @@
+{
+  "games": [
+    {
+      "id": 1,
+      "name": "2048",
+      "author": "Gabriele Cirulli",
+      "cover": "https://via.placeholder.com/200?text=2048",
+      "url": "https://gabrielecirulli.github.io/2048/"
+    },
+    {
+      "id": 2,
+      "name": "Chrome Dinosaur",
+      "author": "Google",
+      "cover": "https://via.placeholder.com/200?text=Dino+Game",
+      "url": "https://chromedino.com/"
+    },
+    {
+      "id": 3,
+      "name": "Snake",
+      "author": "Classic",
+      "cover": "https://via.placeholder.com/200?text=Snake",
+      "url": "https://playsnakegame.com/"
+    },
+    {
+      "id": 4,
+      "name": "Pac-Man",
+      "author": "Namco",
+      "cover": "https://via.placeholder.com/200?text=Pac-Man",
+      "url": "https://pacman.cc/"
+    }
+  ]
+}
