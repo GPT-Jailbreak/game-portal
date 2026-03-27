@@ -1,10 +1,177 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>GN-Math Game Portal</title>
+  <meta charset="UTF-8" />
+  <title>GN-Math Game Portal</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 20px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      margin: 0 0 10px;
+    }
+
+    p {
+      margin: 0;
+      opacity: 0.9;
+    }
+
+    .layout {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .game-list {
+      width: 320px;
+      max-width: 100%;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .game-card {
+      background: #fff;
+      color: #333;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 10px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .game-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .game-card img {
+      width: 64px;
+      height: 64px;
+      border-radius: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .game-info h3 {
+      margin: 0 0 4px;
+      font-size: 16px;
+    }
+
+    .game-info span {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .game-area {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    #current-game-title {
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    iframe {
+      flex: 1;
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      background: #000;
+    }
+
+    @media (max-width: 800px) {
+      .layout {
+        flex-direction: column;
+      }
+      .game-list {
+        width: 100%;
+        max-height: 250px;
+      }
+      .game-area {
+        min-height: 300px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>Welcome to the GN-Math Game Portal!</h1>
-    <p>Test your math skills and have fun!</p>
-    <!-- Add your game logic here -->
+  <header>
+    <h1>GN-Math Game Portal</h1>
+    <p>“Math homework” — but make it games.</p>
+  </header>
+
+  <div class="layout">
+    <aside class="game-list" id="game-list">
+      <!-- Game cards will be injected here -->
+    </aside>
+
+    <main class="game-area">
+      <div id="current-game-title">Select a game to start playing</div>
+      <iframe
+        id="game-frame"
+        title="Game frame"
+        sandbox="allow-scripts allow-same-origin"
+      ></iframe>
+    </main>
+  </div>
+
+  <script>
+    async function loadGames() {
+      try {
+        const res = await fetch('games.json');
+        const data = await res.json();
+        const games = data.games || [];
+        const listEl = document.getElementById('game-list');
+        const frameEl = document.getElementById('game-frame');
+        const titleEl = document.getElementById('current-game-title');
+
+        games.forEach(game => {
+          const card = document.createElement('div');
+          card.className = 'game-card';
+
+          card.innerHTML = `
+            <img src="${game.cover}" alt="${game.name} cover" />
+            <div class="game-info">
+              <h3>${game.name}</h3>
+              <span>by ${game.author}</span>
+            </div>
+          `;
+
+          card.addEventListener('click', () => {
+            frameEl.src = game.url;
+            titleEl.textContent = game.name;
+          });
+
+          listEl.appendChild(card);
+        });
+      } catch (err) {
+        console.error('Error loading games.json', err);
+        document.getElementById('game-list').textContent =
+          'Failed to load games.';
+      }
+    }
+
+    loadGames();
+  </script>
 </body>
 </html>
